@@ -146,11 +146,11 @@ public class MainActivity extends Activity {
                 editor1.commit();
                 LocationManager locationenable = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-                if (!locationenable.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    Toast.makeText(getBaseContext(), "嘿你幫我開一下GPS吧!!!甘溫阿^^", Toast.LENGTH_LONG).show();
-                    startActivity(callGPSSettingIntent);
-                } else {
+//                if (!locationenable.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//                    Intent callGPSSettingIntent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                    Toast.makeText(getBaseContext(), "嘿你幫我開一下GPS吧!!!甘溫阿^^", Toast.LENGTH_LONG).show();
+//                    startActivity(callGPSSettingIntent);
+//                } else {
                     intent = new Intent(MainActivity.this, wifiservice.getClass());
                     if (isMyServiceRunning(Wifi_service.class)) { // 又有service再跑
 
@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
                     current_period = period;
                 }
 
-            }
+//            }
 
         });
 
