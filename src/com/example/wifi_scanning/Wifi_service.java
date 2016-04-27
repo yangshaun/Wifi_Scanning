@@ -59,7 +59,7 @@ public class Wifi_service extends Service implements LocationListener {
     public static int datalength;
     JSONObject wifidata;
     static public LocationManager lms;
-    public FileWriter fr;
+    public FileWriter fw;
     String bestProvider = LocationManager.GPS_PROVIDER;
 
     // ////////////////////////////////////////
@@ -116,14 +116,17 @@ public class Wifi_service extends Service implements LocationListener {
             sb.append("BSSID:").append(scanResult.BSSID).append("\n");
             sb.append("Timestamp:").append(getTimeStamp()).append("\n");
             sb.append("Level:").append(scanResult.level).append("\n");
-            // sb.append("GPS:(").append(String.format("%.3f",
-            // longitude)).append(",").append(String.format("%.3f",
-            // latitude)).append(")");
+            /*
+             * sb.append("GPS:(").append(String.format("%.3f",
+             * longitude)).append(",").append(String.format("%.3f",
+             * latitude)).append(")");
+             */
             Wifiary[i] = sb.toString();
         }
         for (int i = 0; i < Wifi_results.size(); i++) {
             wifidata = new JSONObject();
             try {
+                wifidata.put("UUID", MainActivity.android_id);
                 wifidata.put("Timestamp", getTimeStamp());
                 wifidata.put("Name", Wifi_results.get(i).SSID);
                 wifidata.put("Frequency", Wifi_results.get(i).frequency);
@@ -137,8 +140,8 @@ public class Wifi_service extends Service implements LocationListener {
             }
         }
         try {
-            fr.append(data.toString(2));
-            fr.flush();
+            fw.append(data.toString());
+            fw.flush();
             final SharedPreferences.Editor editor = wifi_num.edit();
             editor.putInt("wifi_num", wifinum += data.length());
             Set<String> mySet = new HashSet<String>();
@@ -150,8 +153,6 @@ public class Wifi_service extends Service implements LocationListener {
             wifitotal += data.length();
         } catch (IOException e) {
             Log.e("Wifi_service", "IOException", e);
-        } catch (JSONException e) {
-            Log.e("Wifi_service", "JSONException", e);
         }
         datalength = data.length();
         // Log.e("DATADATDA",tempFile.length()+"    "+data.length()+"data:\n"+data.toString());
@@ -164,13 +165,7 @@ public class Wifi_service extends Service implements LocationListener {
 
     private String getTimeStamp() {
         return DateTime.now().toString("yyyy-MM-dd HH:mm:ss");
-
     }
-
-    // private String ConvertTImeStamp(Long time) {
-    // DateTime dt = new DateTime(time);
-    // return dt.toString("yyyy-MM-dd HH:mm:ss");
-    // }
 
     void getGPS() {
         if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
@@ -202,7 +197,6 @@ public class Wifi_service extends Service implements LocationListener {
             notificationManager.notify(notifyID, notification);
             startActivity(tempintent);
         }
-
     }
 
     @Override
@@ -212,18 +206,15 @@ public class Wifi_service extends Service implements LocationListener {
 
     @Override
     public void onProviderDisabled(String provider) {
-        // TODO Auto-generated method stub
         AbleToLocate = false;
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-        // TODO Auto-generated method stub
     }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-        // TODO Auto-generated method stub
     }
 
     private void locationServiceInitial() {
@@ -278,11 +269,11 @@ public class Wifi_service extends Service implements LocationListener {
             tempFile = new File(tempDir.toString() + "/file.txt");
             if (tempFile.exists()) {
                 Log.w("Wifi_service", "File existed!!!!");
-                fr = new FileWriter(tempFile, true);
+                fw = new FileWriter(tempFile, true);
             } else {
                 Log.i("Wifi_service", "File Created!!!" + "    " + tempDir);
                 tempFile = new File(tempDir, "file.txt");
-                fr = new FileWriter(tempFile);
+                fw = new FileWriter(tempFile);
             }
         } catch (IOException e) {
             Log.e("Wifi_service", "IOException", e);
@@ -305,7 +296,7 @@ public class Wifi_service extends Service implements LocationListener {
         Log.i("Wifi_service", "Service_OnDestroy");
         timer.cancel();
         try {
-            fr.close();
+            fw.close();
         } catch (IOException e) {
             Log.e("Wifi_service", "IOException", e);
         }

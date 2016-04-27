@@ -2,6 +2,7 @@ package com.example.wifi_scanning;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.joda.time.DateTime;
@@ -62,12 +63,12 @@ public class UploadFileToDropbox extends AsyncTask<Void, Void, Boolean> {
             // }
             if (tempfile != null) {
                 if (tempfile.exists()) {// 新的檔案存在
+                    FileWriter fw = new FileWriter(tempfile);
                     FileInputStream fileInputStream = new FileInputStream(tempfile);
                     dropbox.putFile(path + id + "_" + System.currentTimeMillis() + ".json", fileInputStream, tempfile.length(), null, null);
                     return true;
                 }
             }
-
             return false;
         } catch (IOException e) {
             e.printStackTrace();
