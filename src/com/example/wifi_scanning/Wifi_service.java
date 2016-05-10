@@ -80,7 +80,7 @@ public class Wifi_service extends Service implements LocationListener {
     private static SharedPreferences wifi_num;
     public static File ondestroyfile;
     public static int wifinum;
-
+    public static String android_id;
     // ////////////////////////////////////////////////////////
     public Wifi_service() {
     }
@@ -126,7 +126,11 @@ public class Wifi_service extends Service implements LocationListener {
         for (int i = 0; i < Wifi_results.size(); i++) {
             wifidata = new JSONObject();
             try {
-                wifidata.put("UUID", MainActivity.android_id);
+                wifidata.put("UUID", android_id);//這個有存取到MainActivity的資料所以會爆炸 所以我用SharedPreferences
+                
+                
+                
+                
                 wifidata.put("Timestamp", getTimeStamp());
                 wifidata.put("Name", Wifi_results.get(i).SSID);
                 wifidata.put("Frequency", Wifi_results.get(i).frequency);
@@ -140,22 +144,23 @@ public class Wifi_service extends Service implements LocationListener {
             }
         }
         try {
-            fw.append(data.toString());
+            fw.append(data.toString()+"\n");
             fw.flush();
+            ////////////////////////////////////////////////////
             final SharedPreferences.Editor editor = wifi_num.edit();
             editor.putInt("wifi_num", wifinum += data.length());
             Set<String> mySet = new HashSet<String>();
             Collections.addAll(mySet, Wifiary);
             editor.putStringSet("wifi_data", mySet);
             editor.commit();
-
+            ///////////////////////////////////////////////////////
             Log.i("Wifi_service", "Free spac :" + tempFile.getFreeSpace() + "    \n" + tempFile.length() + "    " + wifi_num.getInt("wifi_num", 0) + "data:\n" + data.toString());
             wifitotal += data.length();
         } catch (IOException e) {
             Log.e("Wifi_service", "IOException", e);
         }
         datalength = data.length();
-        // Log.e("DATADATDA",tempFile.length()+"    "+data.length()+"data:\n"+data.toString());
+         Log.e("DATADATDA",tempFile.length()+"    "+data.length()+"data:\n"+data.toString());
         if (isRunning(getBaseContext()) && Wifiary != null) {
             setAdapter();
         }
@@ -243,8 +248,10 @@ public class Wifi_service extends Service implements LocationListener {
         super.onCreate();
         SharedPreferences settings = getSharedPreferences("period", 0);
         wifi_num = getSharedPreferences("wifi_num", 2);
+        SharedPreferences android=getSharedPreferences("android_id",0);
         Wifi_service.period = settings.getInt("period", period);
         Wifi_service.wifinum = wifi_num.getInt("wifi_num", wifinum);
+        Wifi_service.android_id=android.getString("android_id",android_id);
         task = new MyTimerTask();
         lms = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));

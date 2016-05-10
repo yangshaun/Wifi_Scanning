@@ -63,9 +63,9 @@ public class UploadFileToDropbox extends AsyncTask<Void, Void, Boolean> {
             // }
             if (tempfile != null) {
                 if (tempfile.exists()) {// 新的檔案存在
-                    FileWriter fw = new FileWriter(tempfile);
                     FileInputStream fileInputStream = new FileInputStream(tempfile);
                     dropbox.putFile(path + id + "_" + System.currentTimeMillis() + ".json", fileInputStream, tempfile.length(), null, null);
+                    Log.e("OOOOOOOOOOOOOOOOO", "" + tempfile.length());
                     return true;
                 }
             }
@@ -82,7 +82,7 @@ public class UploadFileToDropbox extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean result) {
         if (result) {
-            Log.e("OOOOOOOOOOOOOOOOO", "" + dropbox.toString());
+            //Log.e("OOOOOOOOOOOOOOOOO", "" + dropbox.toString());
             main.update.setEnabled(true);
             main.spinner.setEnabled(true);
             main.buttonScan.setEnabled(true);

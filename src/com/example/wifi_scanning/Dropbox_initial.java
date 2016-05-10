@@ -59,7 +59,7 @@ public class Dropbox_initial {
         if (session.authenticationSuccessful()) {
             try {
                 main.progress.setVisibility(View.GONE);
-                Log.e("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "OOOOOOOOOOOOOOOOOOOOOOOOOO");
+              
 
                 session.finishAuthentication();
                 TokenPair tokens = session.getAccessTokenPair();
@@ -94,6 +94,7 @@ public class Dropbox_initial {
 
             break;
         case 1:
+        	 Log.e("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "OOOOOOOOOOOOOOOOOOOOOOOOOO"+" :"+service.tempFile.length());
             UploadFileToDropbox upload = new UploadFileToDropbox(main, dropbox, FILE_DIR, isLoggedIn, main.android_id, service.tempFile, main, service.ondestroyfile);
             upload.execute();
             break;

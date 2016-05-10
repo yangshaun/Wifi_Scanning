@@ -87,6 +87,14 @@ public class MainActivity extends Activity {
         // //////////////////////////////////////////////////////////////////////////////////
         time_now = new Date();
         android_id = Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
+        
+        SharedPreferences settings = getSharedPreferences("android_id", 0);
+        final SharedPreferences.Editor editor = settings.edit();
+        editor.putString("android_id",android_id);
+        editor.commit();
+        
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        
         timetext.setText("Current Time : " + dateFormat.format(time_now).toString() + "\n" + "Your Device ID :" + android_id);
         String[] options_str = { "3分鐘", "5分鐘", "10分鐘", "15分鐘" };
         options = new ArrayAdapter<String>(this, R.layout.spin_item, options_str);
@@ -111,7 +119,7 @@ public class MainActivity extends Activity {
                 // TODO Auto-generated method stub
                 switch (position) {
                 case 0:
-                    period = 1000 * 60 * 3;
+                    period = 1000 *60*3 ;
                     break;
                 case 1:
                     period = 1000 * 60 * 5;
