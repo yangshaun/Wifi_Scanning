@@ -119,7 +119,7 @@ public class MainActivity extends Activity {
                 // TODO Auto-generated method stub
                 switch (position) {
                 case 0:
-                    period = 3000 ;
+                    period = 3000*60*3 ;
                     break;
                 case 1:
                     period = 1000 * 60 * 5;
