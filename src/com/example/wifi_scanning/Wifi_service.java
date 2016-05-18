@@ -92,7 +92,7 @@ public class Wifi_service extends Service implements LocationListener {
     public class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            wifi.setWifiEnabled(true);
+            //wifi.setWifiEnabled(true);
             // getGPS(); // 暫時不抓GPS
             Log.i("Wifi_service", "schedule was calles!!!!!!!!!!!!");
             getWiFi();
@@ -256,7 +256,7 @@ public class Wifi_service extends Service implements LocationListener {
         lms = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         status = (LocationManager) (this.getSystemService(Context.LOCATION_SERVICE));
         wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-        wifi.setWifiEnabled(true);
+        //wifi.setWifiEnabled(true);
         timer = new Timer();
         registerReceiver(receiver = new BroadcastReceiver() {
             @Override
